@@ -1,4 +1,4 @@
-﻿################################################################################################
+################################################################################################
 # SDDL-Converter.ps1
 # 
 # AUTHOR: Robin Granberg (robin.granberg@microsoft.com)
@@ -76,6 +76,7 @@ $global:dicNameToSchemaIDGUIDs = @{"user"="BF967ABA-0DE6-11D0-A285-00AA003049E2"
 "organizationalUnit" = "BF967AA5-0DE6-11D0-A285-00AA003049E2";`
 "pwdLastSet" = "BF967A0A-0DE6-11D0-A285-00AA003049E2"}
 }
+
 BuildSchemaDic
 #==========================================================================
 # Function		: CacheRightsGuids
@@ -261,6 +262,10 @@ Function MapGUIDToMatchingName
 Param([string] $strGUIDAsString,[string] $Domain)
 	[string] $strOut = $strGUIDAsString
 	[string] $strLDAPname = ""
+
+    
+    If ($strGUIDAsString -eq "0e10c968-78fb-11d2-90d4-00c04f79dc55") { return "Enroll"}
+    elseif ($strGUIDAsString -eq "a05b8cc2-17bc-4802-a710-e7c15ab866a2") { return "Autoenroll"}
 
     If ($strGUIDAsString -eq "") 
     {
@@ -868,7 +873,10 @@ Switch ($objInheritanceType)
 
 ##
 
-$objhashtableACE = [pscustomobject][ordered]@{IdentityReference = $IdentityReference ;`Trustee = $strNTAccount ;`Access = $objAccess ;`
+$objhashtableACE = [pscustomobject][ordered]@{
+IdentityReference = $IdentityReference ;`
+Trustee = $strNTAccount ;`
+Access = $objAccess ;`
 Inhereted = $objIsInheried ;`
 ApplyTo = $strApplyTo ;`
 Permission = $strPerm}
